@@ -195,10 +195,7 @@ public class GraphManager {
                 : algo.equalsIgnoreCase("random")
                 ? random.search(src, dest)
                 : null;
-        if (path == null) {
-            throw new RuntimeException("Invalid Algorithm");
-        }
-        if(!algo.equalsIgnoreCase("random"))
+        if(!algo.equalsIgnoreCase("random") && path != null)
             System.out.println("Path: " + path.toString());
         return path;
     }
