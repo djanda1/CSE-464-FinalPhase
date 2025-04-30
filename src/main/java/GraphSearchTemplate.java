@@ -21,24 +21,23 @@ public abstract class GraphSearchTemplate {
 
         addNode(src);
         parents.put(src, null);         // set up root
+        String current = null;
         while(hasNodes()) {
-            String current = getNextNode();
+            current = getNextNode();
 
             if(current.equals(dst))
                 return reconstructPath(dst);
 
-            for(Edge edge : graph.getEdges()) {
-                if(edge.getSource().equals(current)) {
-                    String neighbor = edge.getDestination();
-
-                    if(!parents.containsKey(neighbor)) {
-                        parents.put(neighbor, current);
-                        addNode(neighbor);
-                    }
+            List<String> neighbors = graph.getNeighbors(current);
+            for (String neighbor : neighbors) {
+                if (!parents.containsKey(neighbor)) {
+                    parents.put(neighbor, current);
+                    addNode(neighbor);
                 }
             }
+
         }
-        return null;
+        return reconstructPath(current);
     }
 
     private Path reconstructPath(String dst) {

@@ -8,6 +8,7 @@ public class Main {
         }
         System.out.println(gm.toString());
         gm.GraphSearch("b", "e", "bfs");
-        gm.GraphSearch("b", "e", "dfs");
+        gm.GraphSearch("g", "h", "random");
+
     }
 }

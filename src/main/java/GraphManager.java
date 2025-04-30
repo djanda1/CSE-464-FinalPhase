@@ -19,6 +19,7 @@ public class GraphManager {
             while ((line = br.readLine()) != null) {    //while lines still exist in dot file
 
                 //skip empty lines or comments
+                line = line.replace(";", "");
                 if (line.isEmpty() || line.startsWith("#") || line.startsWith("//") || line.startsWith("/*")) {
                     continue;
                 }
@@ -185,11 +186,14 @@ public class GraphManager {
         // refactor Change clutterly if else statement to cleaner language
         GraphSearchTemplate bfs = new BFSGraphSearch(graph);
         GraphSearchTemplate dfs = new DFSGraphSearch(graph);
+        GraphSearchTemplate random = new RandomWalkSearch(graph);
 
         Path path = algo.equalsIgnoreCase("bfs")
                 ? bfs.search(src, dest)
                 : algo.equalsIgnoreCase("dfs")
                 ? dfs.search(src, dest)
+                : algo.equalsIgnoreCase("random")
+                ? random.search(src, dest)
                 : null;
         if (path == null) {
             throw new RuntimeException("Invalid Algorithm");

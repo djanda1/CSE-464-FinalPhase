@@ -68,6 +68,16 @@ public class Graph {
         return edges.contains(edge);
     }
 
+    public List<String> getNeighbors(String node) {
+        List<String> neighbors = new ArrayList<>();
+        for (Edge edge : edges) {
+            if (edge.getSource().equals(node)) {
+                neighbors.add(edge.getDestination());
+            }
+        }
+        return neighbors;
+    }
+
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -173,4 +183,6 @@ public class Graph {
 
         return null;
     }
+
+
 }
