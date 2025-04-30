@@ -198,7 +198,8 @@ public class GraphManager {
         if (path == null) {
             throw new RuntimeException("Invalid Algorithm");
         }
-        System.out.println("Path: " + path.toString());
+        if(!algo.equalsIgnoreCase("random"))
+            System.out.println("Path: " + path.toString());
         return path;
     }
 }
