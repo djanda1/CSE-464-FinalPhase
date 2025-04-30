@@ -16,9 +16,7 @@ public class Graph {
             nodeCount++;
         }
     }
-    public int getNodeCount() {
-        return nodeCount;
-    }
+
     public void addEdge(Edge edge) {
         if(!edges.contains(edge))
             edges.add(edge);
@@ -39,7 +37,7 @@ public class Graph {
         return edges.size();
     }
 
-    public int nodeCount() {
+    public int getNodeCount() {
         return nodes.size();
     }
 

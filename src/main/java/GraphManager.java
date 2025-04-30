@@ -34,21 +34,18 @@ public class GraphManager {
                 }
 
                 if (inFile) {
-                    //remove semicolon
-                    line = line.replace(";", "");
                     Edge newEdge;
                     //parse edges and add to graph object
                     if (line.contains("->")) {
-                        line.replaceAll("\\s+", "");
+                        line.replace(";", "").replaceAll("\\s+", "");       // Refactor combine replace and reformat method of my line to 1 line
                         String[] parts = line.split(" -> ");      //remove whitespace and ->
                         String src = parts[0];
-                        src.trim();
+                        src = src.trim();
                         String dest = parts[1];
-                        dest.trim();
+                        dest = dest.trim();
                         /*if (!graph.containsNode(src)) {      //if graph doesn't contain nodes add them
                             graph.addNode(src);
-                        }
-                         */
+                        }*/
                         if (!graph.containsNode(dest)) {
                             graph.addNode(dest);
                         }
@@ -99,7 +96,7 @@ public class GraphManager {
         Edge newEdge = new Edge(srcLabel, destLabel);
         graph.addNode(srcLabel);
         graph.addNode(destLabel);
-        if(!graph.containsEdge(newEdge)) {
+        if (!graph.containsEdge(newEdge)) {
             graph.addEdge(newEdge);
         }
     }
@@ -107,8 +104,8 @@ public class GraphManager {
     public void outputDOTGraph(String path) {
         StringBuilder sb = new StringBuilder("diagraph {\n");
         List<Edge> edges = graph.getEdges();
-        for(int i = 0; i < edges.size(); i++) {
-            sb.append(edges.get(i).toString() + ";\n");
+        for (Edge edge : edges) {                // refactor, replace default setup (int i etc) to iterate automatically over edges
+            sb.append(edge.toString() + ";\n");
         }
         sb.append("}\n");
     }
@@ -127,17 +124,17 @@ public class GraphManager {
         Map<String, Point> nodePositions = new HashMap<>();
         int radius = 100;
         int centerX = width / 2, centerY = height / 2;
-        int nodeCount = graph.nodeCount();
+        int nodeCount = graph.getNodeCount();
         Set<String> nodes = graph.getNodes();
+        // refactor iterator, was incorrectly iterating over the nodes before
         Iterator<String> nodeIterator = nodes.iterator();
-        String node = nodeIterator.next();
-
         // draw nodes
-        for (int i = 0; i < nodeCount; i++) {
+        for (int i = 0; nodeIterator.hasNext() && i < nodeCount; i++) {
+            String node = nodeIterator.next();
             double angle = 2 * Math.PI * i / nodeCount;
             int x = (int) (centerX + radius * Math.cos(angle));
             int y = (int) (centerY + radius * Math.sin(angle));
-            nodePositions.put(node, new Point(x,y));
+            nodePositions.put(node, new Point(x, y));
             g.fillOval(x - 10, y - 10, 20, 20);
             g.drawString(node, x - 5, y - 15);
             node = nodeIterator.next();
@@ -155,7 +152,7 @@ public class GraphManager {
         }
 
         g.dispose();
-        if("png".equalsIgnoreCase(format)) {        // make png file if that's the format
+        if ("png".equalsIgnoreCase(format)) {        // make png file if that's the format
             ImageIO.write(image, "png", new File(path));
         }
 
@@ -163,46 +160,39 @@ public class GraphManager {
 
     //Remove node function
     public void removeNode(String label) {
-        if(graph.removeNode(label)) {
+        if (graph.removeNode(label)) {
             System.out.println(label + " successfully removed");
-        }
-        else
+        } else
             throw new RuntimeException(label + " does not exist or did not get removed correctly.");
     }
 
     //Remove node(s)
     public void removeNodes(String[] label) {
-        for(int i = 0; i < label.length; i++) {
+        for (int i = 0; i < label.length; i++) {
             removeNode(label[i]);
         }
     }
 
     //Remove Edge
     public void removeEdge(String srcLabel, String destLabel) {
-        if(graph.removeSpecificEdge(srcLabel, destLabel))
+        if (graph.removeSpecificEdge(srcLabel, destLabel))
             System.out.println(srcLabel + " -> " + destLabel + " edge successfully removed");
         else
             throw new RuntimeException(srcLabel + " -> " + destLabel + " edge does not exist or did not get removed correctly.");
     }
 
     public Path GraphSearch(String src, String dest, String algo) {
-        if(algo.equalsIgnoreCase("BFS")) {
-            Path path = graph.BFSGraphSearch(src, dest);
-            if(path == null)
-                throw new RuntimeException(src + " node doesn't exist or no path found.");
-            else
-                System.out.println(path.toString());
-            return path;
+        // refactor Change clutterly if else statement to cleaner language
+        Path path = algo.equalsIgnoreCase("bfs")
+                ? graph.BFSGraphSearch(src, dest)
+                : algo.equalsIgnoreCase("dfs")
+                ? graph.DFSGraphSearch(src, dest)
+                : null;
+        if (path == null) {
+            throw new RuntimeException("Invalid Algorithm");
         }
-        else if(algo.equalsIgnoreCase("DFS")) {
-            Path path = graph.DFSGraphSearch(src, dest);
-            if(path == null)
-                throw new RuntimeException(src + " node doesn't exist or no path found.");
-            else
-                System.out.println(path.toString());
-            return path;
-        }
-        return null;
+        System.out.println("Path: " + path.toString());
+        return path;
     }
 }
 
