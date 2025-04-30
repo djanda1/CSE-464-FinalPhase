@@ -18,13 +18,16 @@ public class RandomWalkSearch extends GraphSearchTemplate {
     @Override
     protected String getNextNode() {
         List<String> neighbors = graph.getNeighbors(currentNode);
+
         if (neighbors.isEmpty()) {
-            return null; // No valid move
+            return null; // Prevents null issue
         }
+
         currentNode = neighbors.get(random.nextInt(neighbors.size())); // Pick a random neighbor
         path.add(currentNode); // Append to path
         return currentNode;
     }
+
 
     @Override
     protected boolean hasNodes() {

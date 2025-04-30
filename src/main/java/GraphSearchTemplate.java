@@ -25,8 +25,19 @@ public abstract class GraphSearchTemplate {
         while(hasNodes()) {
             current = getNextNode();
 
-            if(current.equals(dst))
-                return reconstructPath(dst);
+            while (hasNodes()) {
+                current = getNextNode();
+
+                if (current == null) {
+                    System.out.println("Dead End");
+                    return null; // Prevents null comparison
+                }
+
+                if (current.equals(dst)) {
+                    return reconstructPath(dst);
+                }
+            }
+
 
             List<String> neighbors = graph.getNeighbors(current);
             for (String neighbor : neighbors) {
