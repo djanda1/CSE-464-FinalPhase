@@ -196,7 +196,7 @@ public class GraphManager {
                 ? random.search(src, dest)
                 : null;
         if(!algo.equalsIgnoreCase("random") && path != null)
-            System.out.println("Path: " + path.toString());
+                System.out.println("Path: " + path.toString());
         return path;
     }
 }

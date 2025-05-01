@@ -15,40 +15,38 @@ public abstract class GraphSearchTemplate {
     protected abstract boolean hasNodes();
 
     public Path search(String src, String dst) {
-        if(!graph.containsNode(src) || !graph.containsNode(dst)) {
+        if (!graph.containsNode(src) || !graph.containsNode(dst)) {
             return null;
         }
 
         addNode(src);
-        parents.put(src, null);         // set up root
-        String current = null;
-        while(hasNodes()) {
+        parents.put(src, null); // Set up root
+        String current = "";
+        while (hasNodes()) {
             current = getNextNode();
+            if (current == null) {
+                return null;
+            }
 
-            while (hasNodes()) {
-                current = getNextNode();
-
-                if (current == null) {
-                    System.out.println("Dead End");
-                    return null; // Prevents null comparison
-                }
+            if (!visited.contains(current)) {
+                visited.add(current); // Mark as visited when exploring (popped)
 
                 if (current.equals(dst)) {
-                    return reconstructPath(dst);
+                    Path path = reconstructPath(dst);
+                    path.setFound(true); // Mark path as found
+                    return path;
+                }
+
+                List<String> neighbors = graph.getNeighbors(current);
+                for (String neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        parents.put(neighbor, current);
+                        addNode(neighbor);
+                    }
                 }
             }
-
-
-            List<String> neighbors = graph.getNeighbors(current);
-            for (String neighbor : neighbors) {
-                if (!parents.containsKey(neighbor)) {
-                    parents.put(neighbor, current);
-                    addNode(neighbor);
-                }
-            }
-
         }
-        return reconstructPath(current);
+        return reconstructPath(current); // No path found
     }
 
     private Path reconstructPath(String dst) {
