@@ -16,9 +16,7 @@ public class Graph {
             nodeCount++;
         }
     }
-    public int getNodeCount() {
-        return nodeCount;
-    }
+
     public void addEdge(Edge edge) {
         if(!edges.contains(edge))
             edges.add(edge);
@@ -39,7 +37,7 @@ public class Graph {
         return edges.size();
     }
 
-    public int nodeCount() {
+    public int getNodeCount() {
         return nodes.size();
     }
 
@@ -60,7 +58,7 @@ public class Graph {
 
     public Set<String> getNodes() {
         return nodes;
-    }
+    }       // refactor 5 removed a method that was doing the same as getNodes() and changed other code to only use this method
 
     public boolean containsNode(String node) {
         return nodes.contains(node);
@@ -68,6 +66,16 @@ public class Graph {
 
     public boolean containsEdge(Edge edge) {
         return edges.contains(edge);
+    }
+
+    public List<String> getNeighbors(String node) {
+        List<String> neighbors = new ArrayList<>();
+        for (Edge edge : edges) {
+            if (edge.getSource().equals(node)) {
+                neighbors.add(edge.getDestination());
+            }
+        }
+        return neighbors;
     }
 
 
@@ -175,4 +183,6 @@ public class Graph {
 
         return null;
     }
+
+
 }
