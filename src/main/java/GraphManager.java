@@ -183,11 +183,11 @@ public class GraphManager {
     }
 
     public Path GraphSearch(String src, String dest, String algo) {
-        // refactor Change clutterly if else statement to cleaner language
         GraphSearchTemplate bfs = new BFSGraphSearch(graph);
         GraphSearchTemplate dfs = new DFSGraphSearch(graph);
         GraphSearchTemplate random = new RandomWalkSearch(graph);
 
+        // refactor Change clutterly if else statement to cleaner language
         Path path = algo.equalsIgnoreCase("bfs")
                 ? bfs.search(src, dest)
                 : algo.equalsIgnoreCase("dfs")

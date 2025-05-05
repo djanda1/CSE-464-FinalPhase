@@ -73,7 +73,21 @@ public class Main {
                     break;
 
                 case 7:
-                    return;
+                    System.out.println("Enter the source node to start your path");
+                    src = sc.nextLine();
+                    System.out.println("Enter the destination node to end your path");
+                    dst = sc.nextLine();
+                    System.out.println("Enter 1. for BFS, 2. for DFS, or 3. for Random Search Walk");
+                    int searchType = Integer.parseInt(sc.nextLine());
+                    if(searchType == 1)
+                        System.out.println(gm.GraphSearch(src, dst, "bfs").toString());
+                    else if(searchType == 2)
+                        System.out.println(gm.GraphSearch(src, dst, "dfs").toString());
+                    else if(searchType == 3)
+                        System.out.println(gm.GraphSearch(src, dst, "random").toString());
+                    else
+                        System.out.println("Invalid search type");
+                    break;
 
                 default:
                     System.out.println("Invalid choice");
@@ -92,7 +106,8 @@ public class Main {
                 "\n4. Add edge" +
                 "\n5. Remove node" +
                 "\n6. Remove edge" +
-                "\n7. Exit");
+                "\n7. Seach for path" +
+                "\n8. Exit");
     }
 
 }

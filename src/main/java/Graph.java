@@ -58,7 +58,7 @@ public class Graph {
 
     public Set<String> getNodes() {
         return nodes;
-    }
+    }       // refactor 5 removed a method that was doing the same as getNodes() and changed other code to only use this method
 
     public boolean containsNode(String node) {
         return nodes.contains(node);
