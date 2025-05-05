@@ -89,6 +89,9 @@ public class Main {
                         System.out.println("Invalid search type");
                     break;
 
+                case 8:
+                    return;
+
                 default:
                     System.out.println("Invalid choice");
                     break;
